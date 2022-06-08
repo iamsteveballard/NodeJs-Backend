@@ -1,0 +1,102 @@
+org: iamsteveballard
+app: http-api
+service: http-api
+frameworkVersion: '3'
+
+custom:
+  petTableName: 'pet-table-${sls:stage}'
+  storeTableName: 'store-table-${sls:stage}'
+  imageBucket: 'plasmatic-image-bucket-${sls:stage}'
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  stage: dev
+  region: us-west-2
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: '*'
+        - Effect: Allow
+          Action:
+            - s3:*
+          Resource: '*'
+
+functions:
+  PetsApiFunction:
+    handler: handler.index
+    events:
+      - httpApi:
+          path: /pet
+          method: post
+      - httpApi:
+          path: /pet/{petId}
+          method: get
+      - httpApi:
+          path: /pet/{petId}/uploadImage
+          method: post
+      - httpApi:
+          path: /pet/{petId}
+          method: post
+      - httpApi:
+          path: /pet/findByStatus
+          method: get
+      - httpApi:
+          path: /pet/{petId}
+          method: delete
+      - httpApi:
+          path: /store/order
+          method: post
+      - httpApi:
+          path: /store/order/{orderId}
+          method: get
+      - httpApi:
+          path: /store/order/{orderId}
+          method: delete
+      - httpApi:
+          path: /store/order/inventory
+          method: get
+      
+resources:
+  Resources:
+    PetTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: petId
+            AttributeType: N
+        KeySchema:
+          - AttributeName: petId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.petTableName}
+    StoreTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: orderId
+            AttributeType: N
+        KeySchema:
+          - AttributeName: orderId
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        TableName: ${self:custom.storeTableName}
+    ImagesBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.imageBucket}
+
+
+
+
+
+
+

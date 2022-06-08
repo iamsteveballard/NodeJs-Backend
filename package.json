@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.105.0",
+    "@aws-sdk/client-s3": "^3.105.0",
+    "@aws-sdk/s3-presigned-post": "^3.105.0",
+    "joi": "^17.6.0"
+  },
+  "devDependencies": {
+    "jest": "^28.1.1"
+  },
+  "scripts": {
+    "test": "jest"
+  }
+}
