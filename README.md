@@ -11,6 +11,10 @@ language: nodeJS
 
 This is a NodeJS Project built with AWS APIGateway and Lambda. It's launched with the Serverless framework to make development easy. 
 
+## Demo Video
+
+https://www.youtube.com/watch?v=69vaY_X-Qfk
+
 ## Usage
 
 ### Deployment
