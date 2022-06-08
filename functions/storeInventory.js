@@ -1,10 +1,10 @@
-// GET /store/inventory
+// GET /store/order/inventory
 const { ScanCommand } = require("@aws-sdk/client-dynamodb");
 
 exports.storeInventory = async (ddbClient) => {
 
     const params = {
-        TableName: "storeorders",
+        TableName: "store-table-dev",
         ProjectionExpression:"orderId, stat",
         ReturnConsumedCapacity: "TOTAL",
     };
